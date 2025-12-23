@@ -1,3 +1,5 @@
+using CleanTeeth.Domain.Exceptions;
+
 namespace CleanTeeth.Domain.ValueObjects;
 
 public class TimeInterval
@@ -8,7 +10,7 @@ public class TimeInterval
     {
         if (startTime > endTime)
         {
-            throw new ArgumentException("Start time cannot be after end time.");
+            throw new BusinessRuleException("Start time cannot be after end time.");
         }
 
         StartTime = startTime;
