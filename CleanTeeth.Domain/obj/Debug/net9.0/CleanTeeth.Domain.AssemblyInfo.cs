@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CleanTeeth.Domain")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f79bd0e3d21111453b37cb8024e81bfc6f422dc5")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6df12423c2f5b8e3b511a806232ca90ae0f90baf")]
 [assembly: System.Reflection.AssemblyProductAttribute("CleanTeeth.Domain")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CleanTeeth.Domain")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
