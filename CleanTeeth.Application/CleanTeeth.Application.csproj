@@ -15,6 +15,7 @@
     <Folder Include="DentalOffices/Commands/" />
     <Folder Include="DentalOffices/Commands/CreateDentalOffice/" />
     <Folder Include="DentalOffices/Queries/" />
+    <Folder Include="External/" />
   </ItemGroup>
 
 </Project>
