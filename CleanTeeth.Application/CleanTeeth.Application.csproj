@@ -10,4 +10,11 @@
     <ProjectReference Include="../CleanTeeth.Domain/CleanTeeth.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="DentalOffices/" />
+    <Folder Include="DentalOffices/Commands/" />
+    <Folder Include="DentalOffices/Commands/CreateDentalOffice/" />
+    <Folder Include="DentalOffices/Queries/" />
+  </ItemGroup>
+
 </Project>
