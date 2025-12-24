@@ -2,25 +2,32 @@ using CleanTeeth.Application.Common.Exceptions;
 using CleanTeeth.Domain.Entities;
 using CleanTeeth.Domain.Interfaces;
 using FluentValidation;
+using MediatR;
 
 namespace CleanTeeth.Application.DentalOffices.Commands.CreateDentalOffice;
 
-public class CreateDentalOfficeCommandHandler
+public class CreateDentalOfficeCommandHandler : IRequestHandler<CreateDentalOfficeCommand, Guid> 
+// Guid represents the ID of the created dental office. IRequestHandler interface is from MediatR 
+// library and is used to handle requests of type CreateDentalOfficeCommand and return a response of type Guid.
 {
     private readonly IDentalOfficeRepository _dentalOfficeRepository;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IValidator<CreateDentalOfficeCommand> _validator;
 
-    public CreateDentalOfficeCommandHandler(IDentalOfficeRepository dentalOfficeRepository, IUnitOfWork unitOfWork, IValidator<CreateDentalOfficeCommand> validator)
+    public CreateDentalOfficeCommandHandler(
+        IDentalOfficeRepository dentalOfficeRepository, 
+        IUnitOfWork unitOfWork, 
+        IValidator<CreateDentalOfficeCommand> validator
+    )
     {
         _dentalOfficeRepository = dentalOfficeRepository;
         _unitOfWork = unitOfWork;
         _validator = validator;
     }
 
-    public async Task<Guid> Handle(CreateDentalOfficeCommand command) // Guid represents the ID of the created dental office
+    public async Task<Guid> Handle(CreateDentalOfficeCommand command, CancellationToken cancellationToken) // Guid represents the ID of the created dental office
     {
-        var validationResult = await _validator.ValidateAsync(command);
+        var validationResult = await _validator.ValidateAsync(command, cancellationToken);
         if (!validationResult.IsValid)
         {
             throw new CustomValidationException(validationResult);
