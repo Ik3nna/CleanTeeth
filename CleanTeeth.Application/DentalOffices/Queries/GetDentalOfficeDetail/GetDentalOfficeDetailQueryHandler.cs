@@ -1,3 +1,4 @@
+using AutoMapper;
 using CleanTeeth.Application.Common.Exceptions;
 using CleanTeeth.Domain.Interfaces;
 using MediatR;
@@ -7,10 +8,12 @@ namespace CleanTeeth.Application.DentalOffices.Queries.GetDentalOfficeDetail;
 public class GetDentalOfficeDetailQueryHandler : IRequestHandler<GetDentalOfficeDetailQuery, DentalOfficeDetailDTO>
 {
     private readonly IDentalOfficeRepository _dentalOfficeRepository;
+    private readonly IMapper _mapper;
 
-    public GetDentalOfficeDetailQueryHandler(IDentalOfficeRepository dentalOfficeRepository)
+    public GetDentalOfficeDetailQueryHandler(IDentalOfficeRepository dentalOfficeRepository, IMapper mapper)
     {
         _dentalOfficeRepository = dentalOfficeRepository;
+        _mapper = mapper;
     }
 
     public async Task<DentalOfficeDetailDTO> Handle(GetDentalOfficeDetailQuery request, CancellationToken cancellationToken)
@@ -21,10 +24,7 @@ public class GetDentalOfficeDetailQueryHandler : IRequestHandler<GetDentalOffice
             throw new NotFoundException("Dental office not found");
         }
 
-        return new DentalOfficeDetailDTO
-        {
-            Id = dentalOffice.Id,
-            Name = dentalOffice.Name
-        };
+        var dto = _mapper.Map<DentalOfficeDetailDTO>(dentalOffice);
+        return dto;
     }
 }

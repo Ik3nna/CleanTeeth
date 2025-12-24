@@ -2,13 +2,20 @@ using MediatR;
 using CleanTeeth.Application.Common.Behaviours;
 using CleanTeeth.Application.DentalOffices.Commands.CreateDentalOffice;
 using FluentValidation;
+using CleanTeeth.Application.Common.Mappings;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Register Validators
+// =====================================================================
+    // VALIDATION, MAPPING
+// =====================================================================
 builder.Services.AddValidatorsFromAssembly(
     typeof(CreateDentalOfficeCommand).Assembly
 );
+builder.Services.AddAutoMapper(cfg =>
+{
+    cfg.AddProfile<AutoMapperProfiles>();
+});
 
 // Register MediatR
 builder.Services.AddMediatR(typeof(CreateDentalOfficeCommand).Assembly);
