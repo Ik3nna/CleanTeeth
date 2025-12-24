@@ -11,11 +11,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="DentalOffices/" />
-    <Folder Include="DentalOffices/Commands/" />
-    <Folder Include="DentalOffices/Commands/CreateDentalOffice/" />
+    <Folder Include="Common/" />
+    <Folder Include="Common/Exceptions/" />
     <Folder Include="DentalOffices/Queries/" />
     <Folder Include="External/" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.1" />
   </ItemGroup>
 
 </Project>

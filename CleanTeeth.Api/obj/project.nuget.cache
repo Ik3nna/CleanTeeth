@@ -1,10 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "ZHC7LQbbzp8=",
+  "dgSpecHash": "2nOrKWRe/ks=",
   "success": true,
   "projectFilePath": "/Users/apple/Documents/codes/CleanTeeth/CleanTeeth.Api/CleanTeeth.Api.csproj",
   "expectedPackageFiles": [
+    "/Users/apple/.nuget/packages/fluentvalidation/12.1.1/fluentvalidation.12.1.1.nupkg.sha512",
+    "/Users/apple/.nuget/packages/fluentvalidation.dependencyinjectionextensions/12.1.1/fluentvalidation.dependencyinjectionextensions.12.1.1.nupkg.sha512",
     "/Users/apple/.nuget/packages/microsoft.aspnetcore.openapi/9.0.9/microsoft.aspnetcore.openapi.9.0.9.nupkg.sha512",
+    "/Users/apple/.nuget/packages/microsoft.extensions.dependencyinjection.abstractions/2.1.0/microsoft.extensions.dependencyinjection.abstractions.2.1.0.nupkg.sha512",
     "/Users/apple/.nuget/packages/microsoft.openapi/1.6.17/microsoft.openapi.1.6.17.nupkg.sha512"
   ],
   "logs": []
