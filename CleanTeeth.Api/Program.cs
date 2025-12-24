@@ -1,15 +1,27 @@
 using MediatR;
-using System.Reflection;
+using CleanTeeth.Application.Common.Behaviours;
+using CleanTeeth.Application.DentalOffices.Commands.CreateDentalOffice;
+using FluentValidation;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Register Validators
+builder.Services.AddValidatorsFromAssembly(
+    typeof(CreateDentalOfficeCommand).Assembly
+);
+
 // Register MediatR
-builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
+builder.Services.AddMediatR(typeof(CreateDentalOfficeCommand).Assembly);
+
+// =====================================================================
+    // PIPELINE BEHAVIORS (MEDIATR)
+// =====================================================================
+builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ExceptionHandlingBehavior<,>));
 
 // Add API Explorer services (required for Swagger)
+builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-
-// Register Swagger
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
@@ -34,31 +46,4 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
-// Sample weather endpoint
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
-
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast = Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast")
-.WithOpenApi(); // This helps generate better OpenAPI documentation
-
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}

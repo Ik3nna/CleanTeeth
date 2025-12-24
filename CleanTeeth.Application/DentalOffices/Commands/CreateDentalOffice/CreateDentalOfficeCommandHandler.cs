@@ -1,7 +1,5 @@
-using CleanTeeth.Application.Common.Exceptions;
 using CleanTeeth.Domain.Entities;
 using CleanTeeth.Domain.Interfaces;
-using FluentValidation;
 using MediatR;
 
 namespace CleanTeeth.Application.DentalOffices.Commands.CreateDentalOffice;
@@ -12,27 +10,18 @@ public class CreateDentalOfficeCommandHandler : IRequestHandler<CreateDentalOffi
 {
     private readonly IDentalOfficeRepository _dentalOfficeRepository;
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IValidator<CreateDentalOfficeCommand> _validator;
 
     public CreateDentalOfficeCommandHandler(
         IDentalOfficeRepository dentalOfficeRepository, 
-        IUnitOfWork unitOfWork, 
-        IValidator<CreateDentalOfficeCommand> validator
+        IUnitOfWork unitOfWork
     )
     {
         _dentalOfficeRepository = dentalOfficeRepository;
         _unitOfWork = unitOfWork;
-        _validator = validator;
     }
 
     public async Task<Guid> Handle(CreateDentalOfficeCommand command, CancellationToken cancellationToken) // Guid represents the ID of the created dental office
     {
-        var validationResult = await _validator.ValidateAsync(command, cancellationToken);
-        if (!validationResult.IsValid)
-        {
-            throw new CustomValidationException(validationResult);
-        }
-
         var dentalOffice = new DentalOffice(command.Name);
         try
         {
