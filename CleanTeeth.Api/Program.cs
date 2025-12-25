@@ -5,6 +5,8 @@ using FluentValidation;
 using CleanTeeth.Application.Common.Mappings;
 using Microsoft.EntityFrameworkCore;
 using CleanTeeth.Infrastructure.Data;
+using CleanTeeth.Domain.Interfaces;
+using CleanTeeth.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,6 +36,12 @@ builder.Services.AddMediatR(typeof(CreateDentalOfficeCommand).Assembly);
 // =====================================================================
 builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ExceptionHandlingBehavior<,>));
+
+// =====================================================================
+    // CORE & INFRASTRUCTURE
+// =====================================================================
+builder.Services.AddScoped<IDentalOfficeRepository, DentalOfficeRepository>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 // Add API Explorer services (required for Swagger)
 builder.Services.AddControllers();

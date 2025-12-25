@@ -6,7 +6,7 @@ public interface IDentalOfficeRepository
 {
     Task<DentalOffice> GetDentalOfficeByIdAsync(Guid id);
     Task<IEnumerable<DentalOffice>> GetAllDentalOfficesAsync();
-    Task AddDentalOfficeAsync(DentalOffice dentalOffice);
-    Task UpdateDentalOfficeAsync(DentalOffice dentalOffice);
+    Task<DentalOffice> AddDentalOfficeAsync(DentalOffice dentalOffice);
+    Task<DentalOffice> UpdateDentalOfficeAsync(DentalOffice dentalOffice);
     Task DeleteDentalOfficeAsync(Guid id);
 }
