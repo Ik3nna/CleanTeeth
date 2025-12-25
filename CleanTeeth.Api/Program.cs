@@ -3,8 +3,17 @@ using CleanTeeth.Application.Common.Behaviours;
 using CleanTeeth.Application.DentalOffices.Commands.CreateDentalOffice;
 using FluentValidation;
 using CleanTeeth.Application.Common.Mappings;
+using Microsoft.EntityFrameworkCore;
+using CleanTeeth.Infrastructure.Data;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// =====================================================================
+    // DB Context
+// =====================================================================
+builder.Services.AddDbContext<CleanTeethDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("CleanTeethConnectionString"))
+);
 
 // =====================================================================
     // VALIDATION, MAPPING
