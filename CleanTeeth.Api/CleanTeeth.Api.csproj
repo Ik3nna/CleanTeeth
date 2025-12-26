@@ -30,4 +30,8 @@
     <ProjectReference Include="../CleanTeeth.Infrastructure/CleanTeeth.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Controller/" />
+  </ItemGroup>
+
 </Project>

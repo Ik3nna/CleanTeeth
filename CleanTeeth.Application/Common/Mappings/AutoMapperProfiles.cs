@@ -1,4 +1,5 @@
 using AutoMapper;
+using CleanTeeth.Application.DentalOffices.Commands.CreateDentalOffice;
 using CleanTeeth.Application.DentalOffices.Queries.GetDentalOfficeDetail;
 using CleanTeeth.Domain.Entities;
 
@@ -9,5 +10,6 @@ public class AutoMapperProfiles : Profile
     public AutoMapperProfiles()
     {
         CreateMap<DentalOffice, DentalOfficeDetailDTO>().ReverseMap();
+        CreateMap<DentalOffice, DentalOfficeDTO>().ReverseMap();
     }
 }
