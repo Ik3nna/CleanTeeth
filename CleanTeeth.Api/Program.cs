@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using CleanTeeth.Infrastructure.Data;
 using CleanTeeth.Domain.Interfaces;
 using CleanTeeth.Infrastructure.Repositories;
+using CleanTeeth.API.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -69,6 +70,7 @@ if (app.Environment.IsDevelopment())
     });
 }
 
+app.UseCustomExceptionHandler();
 app.MapControllers();
 app.UseHttpsRedirection();
 app.Run();
