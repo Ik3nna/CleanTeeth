@@ -16,9 +16,13 @@ namespace CleanTeeth.Api.Controller
             _mediator = mediator;
         }
 
+        /// <summary>
+        /// Creates a dental office
+        /// </summary>
+        /// <response code="201">Returns the newly created dental office</response>
         [HttpPost]
         [ProducesResponseType(typeof(ApiResponse<DentalOfficeDTO>), 201)]
-        public async Task<ActionResult<DentalOfficeDTO>> Post([FromBody] CreateDentalOfficeRequest request)
+        public async Task<IActionResult> Post([FromBody] CreateDentalOfficeRequest request)
         {
             var command = new CreateDentalOfficeCommand
             {
@@ -35,9 +39,13 @@ namespace CleanTeeth.Api.Controller
             );
         }
 
+        /// <summary>
+        /// Gets a dental office by ID  
+        /// </summary>
+        /// <response code="200">Returns the dental office of the specified ID</response>
         [HttpGet("{id:Guid}")]
         [ProducesResponseType(typeof(ApiResponse<DentalOfficeDetailDTO>), 200)]
-        public async Task<ActionResult<DentalOfficeDetailDTO>> GetById([FromRoute] Guid id)
+        public async Task<IActionResult> GetById([FromRoute] Guid id)
         {
             var dto = await _mediator.Send(new GetDentalOfficeDetailQuery { Id = id });
             var response = ApiResponse<DentalOfficeDetailDTO>.Success(dto, $"Dental office with {id} retrieved successfully");

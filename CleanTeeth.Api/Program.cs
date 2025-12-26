@@ -8,6 +8,7 @@ using CleanTeeth.Infrastructure.Data;
 using CleanTeeth.Domain.Interfaces;
 using CleanTeeth.Infrastructure.Repositories;
 using CleanTeeth.API.Middlewares;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -55,6 +56,11 @@ builder.Services.AddSwaggerGen(c =>
         Version = "v1",
         Description = "API for CleanTeeth application"
     });
+
+    // Include XML comments
+    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+    c.IncludeXmlComments(xmlPath);
 });
 
 var app = builder.Build();
