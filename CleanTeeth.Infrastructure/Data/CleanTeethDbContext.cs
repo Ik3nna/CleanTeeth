@@ -1,4 +1,5 @@
 using CleanTeeth.Domain.Entities;
+using CleanTeeth.Domain.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 
 namespace CleanTeeth.Infrastructure.Data;
@@ -27,5 +28,22 @@ public class CleanTeethDbContext : DbContext
         });
 
         // Patient configuration
+        modelBuilder.Entity<Patient>(patient =>
+        {
+            patient.Property(p => p.Name)
+                .IsRequired()
+                .HasMaxLength(150);
+            
+            // Treat Email as a Value Object
+            patient.Property(p => p.Email) // map directly
+                .HasConversion(
+                    email => email.Value,
+                    value => new Email(value))
+                .IsRequired()
+                .HasMaxLength(256);
+
+            patient.HasIndex(p => p.Email)
+                .IsUnique();
+        });
     }
 }

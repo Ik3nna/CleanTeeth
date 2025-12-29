@@ -6,6 +6,7 @@ public class DentalOffice
 {
     public Guid Id { get; private set; }
     public string Name { get; private set; } = null!;
+    private DentalOffice() { } // EF Core
     public DentalOffice(string name)
     {
         EnforceNameBusinessRules(name);

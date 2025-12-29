@@ -8,7 +8,7 @@ public class Patient
     public Guid Id { get; private set; }
     public string Name { get; private set; } = null!;
     public Email Email { get; private set; } = null!;
-
+    private Patient () {} // EF core
     public Patient(string name, Email email)
     {
         if (string.IsNullOrWhiteSpace(name))
