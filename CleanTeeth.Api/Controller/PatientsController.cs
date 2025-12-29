@@ -1,5 +1,6 @@
 using CleanTeeth.Api.Contracts.Patients;
 using CleanTeeth.Application.Patients.Commands.CreatePatient;
+using CleanTeeth.Application.Patients.Queries.GetPatient;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -30,6 +31,19 @@ namespace CleanTeeth.Api.Controller
                 new { id = dto.Id },
                 response
             );
+        }
+
+        /// <summary>
+        /// Gets a list of patients
+        /// </summary>
+        /// <response code="200">Returns the list of patients</response>
+        [HttpGet]
+        [ProducesResponseType(typeof(ApiResponse<List<GetPatientDTO>>), 200)]
+        public async Task<ActionResult<GetPatientDTO>> Get()
+        {
+            var dto = await _mediator.Send(new GetPatientQuery());
+            var response = ApiResponse<List<GetPatientDTO>>.Success(dto, "Patients retrieved successfully");
+            return Ok(response);
         }
 
         [HttpGet("{id:Guid}")]
