@@ -7,7 +7,7 @@ namespace CleanTeeth.Application.DentalOffices.Commands.CreateDentalOffice;
 
 public class CreateDentalOfficeCommandHandler : IRequestHandler<CreateDentalOfficeCommand, DentalOfficeDTO> 
 // IRequestHandler interface is from MediatR library and is used to handle requests of
-// type CreateDentalOfficeCommand and return a response of type Guid.
+// type CreateDentalOfficeCommand and return a response of type DentalOfficeDTO.
 {
     private readonly IDentalOfficeRepository _dentalOfficeRepository;
     private readonly IUnitOfWork _unitOfWork;

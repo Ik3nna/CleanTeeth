@@ -8,6 +8,6 @@ public class UpdateDentalOfficeCommandValidator : AbstractValidator<UpdateDental
     {
         RuleFor(x => x.Name)
             .NotEmpty().WithMessage("Dental office name is required.")
-            .MaximumLength(50).WithMessage("Dental office name must not exceed 50 characters.");
+            .MaximumLength(150).WithMessage("Dental office name must not exceed 150 characters.");
     }
 }
