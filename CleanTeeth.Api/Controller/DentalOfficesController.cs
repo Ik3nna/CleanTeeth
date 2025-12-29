@@ -1,6 +1,7 @@
 using CleanTeeth.Api.Contracts.DentalOffices;
 using CleanTeeth.Application.DentalOffices.Commands.CreateDentalOffice;
 using CleanTeeth.Application.DentalOffices.Queries.GetDentalOfficeDetail;
+using CleanTeeth.Application.DentalOffices.Queries.GetDentalOfficeQuery;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -49,6 +50,19 @@ namespace CleanTeeth.Api.Controller
         {
             var dto = await _mediator.Send(new GetDentalOfficeDetailQuery { Id = id });
             var response = ApiResponse<DentalOfficeDetailDTO>.Success(dto, $"Dental office with {id} retrieved successfully");
+            return Ok(response);
+        }
+
+        /// <summary>
+        /// Gets a list of dental offices
+        /// </summary>
+        /// <response code="200">Returns the list of dental offices</response>
+        [HttpGet]
+        [ProducesResponseType(typeof(ApiResponse<List<GetDentalOfficesDTO>>), 200)]
+        public async Task<ActionResult<List<GetDentalOfficesDTO>>> Get ()
+        {
+            var dto = await _mediator.Send(new GetDentalOfficeQuery ());
+            var response = ApiResponse<List<GetDentalOfficesDTO>>.Success(dto, $"Dental offices retrieved successfully");
             return Ok(response);
         }
     }
