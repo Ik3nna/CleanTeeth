@@ -6,8 +6,8 @@ using MediatR;
 namespace CleanTeeth.Application.DentalOffices.Commands.CreateDentalOffice;
 
 public class CreateDentalOfficeCommandHandler : IRequestHandler<CreateDentalOfficeCommand, DentalOfficeDTO> 
-// Guid represents the ID of the created dental office. IRequestHandler interface is from MediatR 
-// library and is used to handle requests of type CreateDentalOfficeCommand and return a response of type Guid.
+// IRequestHandler interface is from MediatR library and is used to handle requests of
+// type CreateDentalOfficeCommand and return a response of type Guid.
 {
     private readonly IDentalOfficeRepository _dentalOfficeRepository;
     private readonly IUnitOfWork _unitOfWork;

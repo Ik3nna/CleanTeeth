@@ -1,5 +1,7 @@
 using CleanTeeth.Api.Contracts.DentalOffices;
 using CleanTeeth.Application.DentalOffices.Commands.CreateDentalOffice;
+using CleanTeeth.Application.DentalOffices.Commands.DeleteDentalOffice;
+using CleanTeeth.Application.DentalOffices.Commands.UpdateDentalOffice;
 using CleanTeeth.Application.DentalOffices.Queries.GetDentalOfficeDetail;
 using CleanTeeth.Application.DentalOffices.Queries.GetDentalOfficeQuery;
 using MediatR;
@@ -63,6 +65,29 @@ namespace CleanTeeth.Api.Controller
         {
             var dto = await _mediator.Send(new GetDentalOfficeQuery ());
             var response = ApiResponse<List<GetDentalOfficesDTO>>.Success(dto, $"Dental offices retrieved successfully");
+            return Ok(response);
+        }
+
+        /// <summary>
+        /// Updates the dental office of the specified ID
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="id"></param>
+        ///<response code="200">Returns the updated dental office</response>
+        [HttpPut("{id:Guid}")]
+        [ProducesResponseType(typeof(ApiResponse<DentalOfficeDTO>), 200)]
+        public async Task<ActionResult<DentalOfficeDTO>> Put ([FromBody] UpdateDentalOfficeRequest request, [FromRoute] Guid id)
+        {
+            var dto = await _mediator.Send(new UpdateDentalOfficeCommand { Id = id, Name = request.Name });
+            var response = ApiResponse<DentalOfficeDTO>.Success(dto, $"Dental office updated successfully");
+            return Ok(response);
+        }
+
+        [HttpDelete("{id:Guid}")]
+        public async Task<IActionResult> Delete ([FromRoute] Guid id)
+        {
+            await _mediator.Send(new DeleteDentalOfficeCommand { Id = id });
+            var response = ApiResponse<DentalOfficeDTO>.Success(null, $"Dental office with {id} deleted successfully");
             return Ok(response);
         }
     }

@@ -15,6 +15,8 @@
     <Folder Include="Common/Behaviours/" />
     <Folder Include="Common/Exceptions/" />
     <Folder Include="Common/Mappings/" />
+    <Folder Include="DentalOffices/Commands/DeleteDentalOffice/" />
+    <Folder Include="DentalOffices/Commands/UpdateDentalOffice/" />
     <Folder Include="DentalOffices/Queries/GetDentalOfficeQuery/" />
   </ItemGroup>
 
