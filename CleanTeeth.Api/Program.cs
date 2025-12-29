@@ -44,6 +44,7 @@ builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ExceptionHand
 // =====================================================================
 builder.Services.AddScoped<IDentalOfficeRepository, DentalOfficeRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IPatientRepository, PatientRepository>();
 
 // Add API Explorer services (required for Swagger)
 builder.Services.AddControllers();

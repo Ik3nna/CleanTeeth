@@ -12,6 +12,8 @@ public class CleanTeethDbContext : DbContext
 
     public DbSet<DentalOffice> DentalOffices { get; set; }
 
+    public DbSet<Patient> Patients { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
@@ -23,5 +25,7 @@ public class CleanTeethDbContext : DbContext
                 .IsRequired()
                 .HasMaxLength(150);
         });
+
+        // Patient configuration
     }
 }
