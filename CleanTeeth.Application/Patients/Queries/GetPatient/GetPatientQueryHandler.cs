@@ -17,7 +17,7 @@ public class GetPatientQueryHandler : IRequestHandler<GetPatientQuery, PagedResu
 
     public async Task<PagedResult<GetPatientDTO>> Handle(GetPatientQuery request, CancellationToken cancellationToken)
     {
-        var patients = await _patientRepository.GetAllAsync(request.page, request.pageSize);
+        var patients = await _patientRepository.GetFilteredAsync(request.page, request.pageSize, request.name, request.email);
         // Map only the Items
         var dtoItems = _mapper.Map<List<GetPatientDTO>>(patients.Items);
         var dto = new PagedResult<GetPatientDTO>

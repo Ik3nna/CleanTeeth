@@ -44,10 +44,12 @@ namespace CleanTeeth.Api.Controller
         [ProducesResponseType(typeof(ApiResponse<PagedResult<GetPatientDTO>>), 200)]
         public async Task<ActionResult<ApiResponse<PagedResult<GetPatientDTO>>>> Get(
             [FromQuery] int page = 1,
-            [FromQuery] int pageSize = 10
+            [FromQuery] int pageSize = 10,
+            [FromQuery] string? name = null, 
+            [FromQuery] string? email = null
         )
         {
-            var dto = await _mediator.Send(new GetPatientQuery(page, pageSize));
+            var dto = await _mediator.Send(new GetPatientQuery(page, pageSize, name, email));
             var response = ApiResponse<PagedResult<GetPatientDTO>>.Success(dto, "Patients retrieved successfully");
             return Ok(response);
         }
