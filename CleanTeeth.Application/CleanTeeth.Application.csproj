@@ -17,14 +17,11 @@
     <Folder Include="DentalOffices/Commands/DeleteDentalOffice/" />
     <Folder Include="DentalOffices/Commands/UpdateDentalOffice/" />
     <Folder Include="DentalOffices/Queries/GetDentalOffice/" />
-    <Folder Include="Patients/" />
     <Folder Include="Patients/Commands/" />
     <Folder Include="Patients/Commands/CreatePatient/" />
     <Folder Include="Patients/Commands/DeletePatient/" />
     <Folder Include="Patients/Commands/UpdatePatient/" />
-    <Folder Include="Patients/Queries/" />
     <Folder Include="Patients/Queries/GetPatient/" />
-    <Folder Include="Patients/Queries/GetPatientDetail/" />
   </ItemGroup>
 
   <ItemGroup>
