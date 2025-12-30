@@ -18,7 +18,7 @@ public class GetDentalOfficeDetailQueryHandler : IRequestHandler<GetDentalOffice
 
     public async Task<DentalOfficeDetailDTO> Handle(GetDentalOfficeDetailQuery request, CancellationToken cancellationToken)
     {
-        var dentalOffice = await _dentalOfficeRepository.GetDentalOfficeByIdAsync(request.Id);
+        var dentalOffice = await _dentalOfficeRepository.GetByIdAsync(request.Id);
         if (dentalOffice == null)
         {
             throw new NotFoundException("Dental office not found");

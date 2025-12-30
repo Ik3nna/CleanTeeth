@@ -33,7 +33,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Common/" />
     <Folder Include="Contracts/Patients/" />
     <Folder Include="Controller/" />
   </ItemGroup>

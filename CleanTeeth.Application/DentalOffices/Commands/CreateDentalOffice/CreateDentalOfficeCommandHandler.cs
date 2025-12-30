@@ -24,12 +24,12 @@ public class CreateDentalOfficeCommandHandler : IRequestHandler<CreateDentalOffi
         _mapper = mapper;
     }
 
-    public async Task<DentalOfficeDTO> Handle(CreateDentalOfficeCommand command, CancellationToken cancellationToken) // Guid represents the ID of the created dental office
+    public async Task<DentalOfficeDTO> Handle(CreateDentalOfficeCommand command, CancellationToken cancellationToken)
     {
         var dentalOffice = new DentalOffice(command.Name);
         try
         {
-            await _dentalOfficeRepository.AddDentalOfficeAsync(dentalOffice);
+            await _dentalOfficeRepository.AddAsync(dentalOffice);
             var dto = _mapper.Map<DentalOfficeDTO>(dentalOffice);
             return dto;
         }

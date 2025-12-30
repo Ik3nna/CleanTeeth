@@ -1,11 +1,10 @@
-using System;
 using AutoMapper;
 using CleanTeeth.Domain.Interfaces;
 using MediatR;
 
 namespace CleanTeeth.Application.Patients.Queries.GetPatient;
 
-public class GetPatientQueryHandler : IRequestHandler<GetPatientQuery, List<GetPatientDTO>>
+public class GetPatientQueryHandler : IRequestHandler<GetPatientQuery, PagedResult<GetPatientDTO>>
 {
     private readonly IPatientRepository _patientRepository;
     private readonly IMapper _mapper;
@@ -16,10 +15,18 @@ public class GetPatientQueryHandler : IRequestHandler<GetPatientQuery, List<GetP
         _mapper = mapper;
     }
 
-    public async Task<List<GetPatientDTO>> Handle(GetPatientQuery request, CancellationToken cancellationToken)
+    public async Task<PagedResult<GetPatientDTO>> Handle(GetPatientQuery request, CancellationToken cancellationToken)
     {
-        var patient = await _patientRepository.GetAllPatientsAsync();
-        var dto = _mapper.Map<List<GetPatientDTO>>(patient);
+        var patients = await _patientRepository.GetAllAsync(request.page, request.pageSize);
+        // Map only the Items
+        var dtoItems = _mapper.Map<List<GetPatientDTO>>(patients.Items);
+        var dto = new PagedResult<GetPatientDTO>
+        {
+            Items = dtoItems,
+            Page = patients.Page,
+            PageSize = patients.PageSize,
+            TotalCount = patients.TotalCount
+        };
         return dto;
     }
 }

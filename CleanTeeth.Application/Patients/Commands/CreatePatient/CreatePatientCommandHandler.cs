@@ -28,7 +28,7 @@ public class CreatePatientCommandHandler : IRequestHandler<CreatePatientCommand,
         var patient = new Patient(command.Name, new Email(command.Email));
         try
         {
-            await _patientRepository.AddPatientAsync(patient);
+            await _patientRepository.AddAsync(patient);
             var dto = _mapper.Map<PatientDTO>(patient);
             return dto;
         }

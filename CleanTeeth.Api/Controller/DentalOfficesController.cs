@@ -58,13 +58,20 @@ namespace CleanTeeth.Api.Controller
         /// <summary>
         /// Gets a list of dental offices
         /// </summary>
+        /// <param name="page">Page number (default 1)</param>
+        /// <param name="pageSize">Page size (default 10)</param>
         /// <response code="200">Returns the list of dental offices</response>
         [HttpGet]
-        [ProducesResponseType(typeof(ApiResponse<List<GetDentalOfficesDTO>>), 200)]
-        public async Task<ActionResult<List<GetDentalOfficesDTO>>> Get ()
+        [ProducesResponseType(typeof(ApiResponse<PagedResult<GetDentalOfficesDTO>>), 200)]
+        public async Task<ActionResult<ApiResponse<PagedResult<GetDentalOfficesDTO>>>> Get(
+            [FromQuery] int page = 1, 
+            [FromQuery] int pageSize = 10)
         {
-            var dto = await _mediator.Send(new GetDentalOfficeQuery ());
-            var response = ApiResponse<List<GetDentalOfficesDTO>>.Success(dto, $"Dental offices retrieved successfully");
+            // Pass the query parameters to the MediatR query
+            var query = new GetDentalOfficeQuery(page, pageSize);
+            var dto = await _mediator.Send(query);
+
+            var response = ApiResponse<PagedResult<GetDentalOfficesDTO>>.Success(dto, "Dental offices retrieved successfully");
             return Ok(response);
         }
 
@@ -76,13 +83,18 @@ namespace CleanTeeth.Api.Controller
         ///<response code="200">Returns the updated dental office</response>
         [HttpPut("{id:Guid}")]
         [ProducesResponseType(typeof(ApiResponse<DentalOfficeDTO>), 200)]
-        public async Task<ActionResult<DentalOfficeDTO>> Put ([FromBody] UpdateDentalOfficeRequest request, [FromRoute] Guid id)
+        public async Task<ActionResult<ApiResponse<DentalOfficeDTO>>> Put ([FromBody] UpdateDentalOfficeRequest request, [FromRoute] Guid id)
         {
             var dto = await _mediator.Send(new UpdateDentalOfficeCommand { Id = id, Name = request.Name });
             var response = ApiResponse<DentalOfficeDTO>.Success(dto, $"Dental office updated successfully");
             return Ok(response);
         }
 
+        /// <summary>
+        /// Deletes the dental office of the specified ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete("{id:Guid}")]
         public async Task<IActionResult> Delete ([FromRoute] Guid id)
         {

@@ -4,7 +4,7 @@ using MediatR;
 
 namespace CleanTeeth.Application.DentalOffices.Queries.GetDentalOfficeQuery;
 
-public class GetDentalOfficeQueryHandler : IRequestHandler<GetDentalOfficeQuery, List<GetDentalOfficesDTO>>
+public class GetDentalOfficeQueryHandler : IRequestHandler<GetDentalOfficeQuery, PagedResult<GetDentalOfficesDTO>>
 {
     private readonly IDentalOfficeRepository _dentalOfficeRepository;
     private readonly IMapper _mapper;
@@ -15,10 +15,18 @@ public class GetDentalOfficeQueryHandler : IRequestHandler<GetDentalOfficeQuery,
         _mapper = mapper;
     }
 
-    public async Task<List<GetDentalOfficesDTO>> Handle(GetDentalOfficeQuery request, CancellationToken cancellationToken)
+    public async Task<PagedResult<GetDentalOfficesDTO>> Handle(GetDentalOfficeQuery request, CancellationToken cancellationToken)
     {
-        var dentalOffice = await _dentalOfficeRepository.GetAllDentalOfficesAsync();
-        var dto = _mapper.Map<List<GetDentalOfficesDTO>>(dentalOffice);
+        var dentalOffice = await _dentalOfficeRepository.GetAllAsync(request.page, request.pageSize);
+        // Map the items
+        var dtoItems = _mapper.Map<List<GetDentalOfficesDTO>>(dentalOffice.Items);
+        var dto = new PagedResult<GetDentalOfficesDTO>
+        {
+            Items = dtoItems,
+            Page = dentalOffice.Page,
+            PageSize = dentalOffice.PageSize,
+            TotalCount = dentalOffice.TotalCount
+        };
         return dto;
     }
 }

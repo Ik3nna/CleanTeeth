@@ -22,7 +22,7 @@ namespace CleanTeeth.Api.Controller
         /// <response code="201">Returns the newly created patient</response>
         [HttpPost]
         [ProducesResponseType(typeof(ApiResponse<PatientDTO>), 201)]
-        public async Task<ActionResult<PatientDTO>> Post([FromBody] CreatePatientRequest request)
+        public async Task<ActionResult<ApiResponse<PatientDTO>>> Post([FromBody] CreatePatientRequest request)
         {
             var dto = await _mediator.Send(new CreatePatientCommand { Email = request.Email, Name = request.Name });
             var response = ApiResponse<PatientDTO>.Success(dto, "Patient created successfully", 201);
@@ -36,13 +36,18 @@ namespace CleanTeeth.Api.Controller
         /// <summary>
         /// Gets a list of patients
         /// </summary>
+        /// <param name="page">Page number (default 1)</param>
+        /// <param name="pageSize">Page size (default 10)</param>
         /// <response code="200">Returns the list of patients</response>
         [HttpGet]
-        [ProducesResponseType(typeof(ApiResponse<List<GetPatientDTO>>), 200)]
-        public async Task<ActionResult<GetPatientDTO>> Get()
+        [ProducesResponseType(typeof(ApiResponse<PagedResult<GetPatientDTO>>), 200)]
+        public async Task<ActionResult<ApiResponse<PagedResult<GetPatientDTO>>>> Get(
+            [FromQuery] int page = 1,
+            [FromQuery] int pageSize = 10
+        )
         {
-            var dto = await _mediator.Send(new GetPatientQuery());
-            var response = ApiResponse<List<GetPatientDTO>>.Success(dto, "Patients retrieved successfully");
+            var dto = await _mediator.Send(new GetPatientQuery(page, pageSize));
+            var response = ApiResponse<PagedResult<GetPatientDTO>>.Success(dto, "Patients retrieved successfully");
             return Ok(response);
         }
 

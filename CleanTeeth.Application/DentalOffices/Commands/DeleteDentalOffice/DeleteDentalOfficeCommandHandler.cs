@@ -25,7 +25,7 @@ public class DeleteDentalOfficeCommandHandler : IRequestHandler<DeleteDentalOffi
 
     public async Task<Unit> Handle(DeleteDentalOfficeCommand command, CancellationToken cancellationToken)
     {
-        var dentalOffice = await _dentalOfficeRepository.GetDentalOfficeByIdAsync(command.Id);
+        var dentalOffice = await _dentalOfficeRepository.GetByIdAsync(command.Id);
 
         if (dentalOffice == null)
         {
@@ -34,7 +34,7 @@ public class DeleteDentalOfficeCommandHandler : IRequestHandler<DeleteDentalOffi
         
         try
         {
-            await _dentalOfficeRepository.DeleteDentalOfficeAsync(dentalOffice.Id);
+            await _dentalOfficeRepository.DeleteAsync(dentalOffice.Id);
             return Unit.Value;
         }
         catch (Exception)

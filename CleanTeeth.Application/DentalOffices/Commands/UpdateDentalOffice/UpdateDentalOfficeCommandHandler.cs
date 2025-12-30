@@ -26,7 +26,7 @@ public class UpdateDentalOfficeCommandHandler : IRequestHandler<UpdateDentalOffi
 
     public async Task<DentalOfficeDTO> Handle(UpdateDentalOfficeCommand command, CancellationToken cancellationToken)
     {
-        var dentalOffice = await _dentalOfficeRepository.GetDentalOfficeByIdAsync(command.Id);
+        var dentalOffice = await _dentalOfficeRepository.GetByIdAsync(command.Id);
 
         if (dentalOffice == null)
         {
@@ -37,7 +37,7 @@ public class UpdateDentalOfficeCommandHandler : IRequestHandler<UpdateDentalOffi
 
         try
         {
-            await _dentalOfficeRepository.UpdateDentalOfficeAsync(dentalOffice);
+            await _dentalOfficeRepository.UpdateAsync(dentalOffice);
             var dto = _mapper.Map<DentalOfficeDTO>(dentalOffice);
             return dto;
         }
