@@ -1,4 +1,3 @@
-using System;
 using AutoMapper;
 using CleanTeeth.Application.Common.Exceptions;
 using CleanTeeth.Domain.Interfaces;
@@ -10,17 +9,14 @@ public class DeleteDentalOfficeCommandHandler : IRequestHandler<DeleteDentalOffi
 {
     private readonly IDentalOfficeRepository _dentalOfficeRepository;
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IMapper _mapper;
 
     public DeleteDentalOfficeCommandHandler(
         IDentalOfficeRepository dentalOfficeRepository, 
-        IUnitOfWork unitOfWork,
-        IMapper mapper
+        IUnitOfWork unitOfWork
     )
     {
         _dentalOfficeRepository = dentalOfficeRepository;
         _unitOfWork = unitOfWork;
-        _mapper = mapper;
     }
 
     public async Task<Unit> Handle(DeleteDentalOfficeCommand command, CancellationToken cancellationToken)
@@ -29,7 +25,7 @@ public class DeleteDentalOfficeCommandHandler : IRequestHandler<DeleteDentalOffi
 
         if (dentalOffice == null)
         {
-            throw new NotFoundException($"The dental office with id: {command.Id} was not founf");
+            throw new NotFoundException($"The dental office with id: {command.Id} was not found");
         }
         
         try
@@ -42,6 +38,5 @@ public class DeleteDentalOfficeCommandHandler : IRequestHandler<DeleteDentalOffi
             await _unitOfWork.RollbackAsync();
             throw;
         }
-        
     }
 }

@@ -11,13 +11,26 @@ public class Patient
     private Patient () {} // EF core
     public Patient(string name, Email email)
     {
-        if (string.IsNullOrWhiteSpace(name))
-        {
-            throw new BusinessRuleException($"The {nameof(name)} is required");
-        }
+        EnforceNameBusinessRules(name);
 
         Name = name;
         Email = email ?? throw new BusinessRuleException($"The {nameof(email)} is required");
         Id = Guid.CreateVersion7();
+    }
+
+    public void UpdatePatient (string name, string email)
+    {
+        EnforceNameBusinessRules(name);
+
+        Name = name;
+        Email = new Email(email); 
+    }
+
+    private void EnforceNameBusinessRules (string name)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            throw new BusinessRuleException($"The {nameof(name)} is required");
+        }
     }
 }

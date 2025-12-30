@@ -1,5 +1,7 @@
 using CleanTeeth.Api.Contracts.Patients;
 using CleanTeeth.Application.Patients.Commands.CreatePatient;
+using CleanTeeth.Application.Patients.Commands.DeletePatient;
+using CleanTeeth.Application.Patients.Commands.UpdatePatient;
 using CleanTeeth.Application.Patients.Queries.GetPatient;
 using CleanTeeth.Application.Patients.Queries.GetPatientDetail;
 using MediatR;
@@ -39,6 +41,8 @@ namespace CleanTeeth.Api.Controller
         /// </summary>
         /// <param name="page">Page number (default 1)</param>
         /// <param name="pageSize">Page size (default 10)</param>
+        /// <param name="name">Filter by a name</param>
+        /// <param name="email">Filter by an email</param>
         /// <response code="200">Returns the list of patients</response>
         [HttpGet]
         [ProducesResponseType(typeof(ApiResponse<PagedResult<GetPatientDTO>>), 200)]
@@ -64,6 +68,34 @@ namespace CleanTeeth.Api.Controller
         {
             var dto = await _mediator.Send(new GetPatientDetailQuery { Id = id });
             var response = ApiResponse<PatientDetailDTO>.Success(dto, $"Patient with {id} retrieved successfully");
+            return Ok(response);
+        }
+
+        /// <summary>
+        /// Deletes the patient of the specified ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpDelete("{id:Guid}")]
+        public async Task<IActionResult> Delete ([FromRoute] Guid id)
+        {
+            await _mediator.Send(new DeletePatientCommand { Id = id });
+            var response = ApiResponse<PatientDTO>.Success(null, $"Patient with {id} deleted successfully");
+            return Ok(response);
+        }
+
+        /// <summary>
+        /// Updates the patient of the specified ID
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="id"></param>
+        ///<response code="200">Returns the updated patient</response>
+        [HttpPut("{id:Guid}")]
+        [ProducesResponseType(typeof(ApiResponse<PatientDTO>), 200)]
+        public async Task<ActionResult<ApiResponse<PatientDTO>>> Put ([FromBody] UpdatePatientRequest request, [FromRoute] Guid id)
+        {
+            var dto = await _mediator.Send(new UpdatePatientCommand { Id = id, Name = request.Name, Email = request.Email });
+            var response = ApiResponse<PatientDTO>.Success(dto, $"Patient updated successfully");
             return Ok(response);
         }
     }
