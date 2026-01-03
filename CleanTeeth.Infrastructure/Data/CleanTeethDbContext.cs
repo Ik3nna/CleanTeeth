@@ -14,6 +14,7 @@ public class CleanTeethDbContext : DbContext
     public DbSet<DentalOffice> DentalOffices { get; set; }
 
     public DbSet<Patient> Patients { get; set; }
+    public DbSet<Dentist> Dentists { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -43,6 +44,25 @@ public class CleanTeethDbContext : DbContext
                 .HasMaxLength(256);
 
             patient.HasIndex(p => p.Email)
+                .IsUnique();
+        });
+
+        // Dentist configuration
+        modelBuilder.Entity<Dentist>(dentist =>
+        {
+            dentist.Property(p => p.Name)
+                .IsRequired()
+                .HasMaxLength(150);
+            
+            // Treat Email as a Value Object
+            dentist.Property(p => p.Email) // map directly
+                .HasConversion(
+                    email => email.Value,
+                    value => new Email(value))
+                .IsRequired()
+                .HasMaxLength(256);
+
+            dentist.HasIndex(p => p.Email)
                 .IsUnique();
         });
     }
