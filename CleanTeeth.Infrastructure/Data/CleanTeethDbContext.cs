@@ -15,6 +15,7 @@ public class CleanTeethDbContext : DbContext
 
     public DbSet<Patient> Patients { get; set; }
     public DbSet<Dentist> Dentists { get; set; }
+    public DbSet<Appointment> Appointments { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -64,6 +65,16 @@ public class CleanTeethDbContext : DbContext
 
             dentist.HasIndex(p => p.Email)
                 .IsUnique();
+        });
+
+        // Appointment Configuration
+        modelBuilder.Entity<Appointment>(appointment =>
+        {
+            appointment.ComplexProperty(p => p.TimeInterval, ti =>
+            {
+                ti.Property(p => p.StartTime).HasColumnName("StartDate");
+                ti.Property(p => p.EndTime).HasColumnName("EndDate");
+            });
         });
     }
 }

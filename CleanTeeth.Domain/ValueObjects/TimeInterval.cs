@@ -6,6 +6,7 @@ public class TimeInterval
 {
     public DateTime StartTime { get; set; }
     public DateTime EndTime { get; set; }
+    private TimeInterval () {}
     public TimeInterval(DateTime startTime, DateTime endTime)
     {
         if (startTime > endTime)

@@ -46,6 +46,7 @@ builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddScoped<IDentalOfficeRepository, DentalOfficeRepository>();
 builder.Services.AddScoped<IPatientRepository, PatientRepository>();
 builder.Services.AddScoped<IDentistRepository, DentistRepository>();
+builder.Services.AddScoped<IAppointmentRepository, AppointmentRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 // Add API Explorer services (required for Swagger)
