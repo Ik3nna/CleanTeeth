@@ -33,6 +33,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Contracts/Appointments/" />
     <Folder Include="Contracts/Patients/" />
     <Folder Include="Controller/" />
   </ItemGroup>

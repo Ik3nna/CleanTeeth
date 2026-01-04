@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Appointments/Queries/GetAppointments/" />
     <Folder Include="Common/Behaviours/" />
     <Folder Include="Common/Exceptions/" />
     <Folder Include="Common/Mappings/" />
