@@ -1,4 +1,5 @@
 using CleanTeeth.Api.Contracts.Appointments;
+using CleanTeeth.Application.Appointments.Commands.CancelAppointment;
 using CleanTeeth.Application.Appointments.Commands.CompleteAppointment;
 using CleanTeeth.Application.Appointments.Commands.CreateAppointment;
 using CleanTeeth.Application.Appointments.Queries.GetAppointmentDetail;
@@ -95,6 +96,19 @@ namespace CleanTeeth.Api.Controller
             var command = new CompleteAppointmentCommand{ Id = id };
             await _mediator.Send(command);
             return ApiResponse<string>.Success(null, "Appointment completed successfully");
+        }
+
+        /// <summary>
+        /// Cancel an appointment
+        /// </summary>
+        /// <response code="200">Cancel an appointment</response>
+        [HttpPost("{id:Guid}/cancel")]
+        [ProducesResponseType(typeof(ApiResponse<string>), 200)]
+        public async Task<ActionResult<ApiResponse<string>>> Cancel ([FromRoute] Guid id)
+        {
+            var command = new CancelAppointmentCommand{ Id = id };
+            await _mediator.Send(command);
+            return ApiResponse<string>.Success(null, "Appointment cancelled successfully");
         }
     }
 }
