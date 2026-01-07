@@ -1,4 +1,5 @@
 using CleanTeeth.Api.Contracts.Appointments;
+using CleanTeeth.Application.Appointments.Commands.CompleteAppointment;
 using CleanTeeth.Application.Appointments.Commands.CreateAppointment;
 using CleanTeeth.Application.Appointments.Queries.GetAppointmentDetail;
 using CleanTeeth.Application.Appointments.Queries.GetAppointments;
@@ -81,6 +82,19 @@ namespace CleanTeeth.Api.Controller
             var dto = await _mediator.Send(new GetAppointmentsQuery(page, pageSize, patient, dentist, dentalOffice, startDate, endDate));
             var response = ApiResponse<PagedResult<AppointmentListDTO>>.Success(dto, "Appointments retrieved successfully");
             return Ok(response);
+        }
+
+        /// <summary>
+        /// Complete an appointment
+        /// </summary>
+        /// <response code="200">Complete an appointment</response>
+        [HttpPost("{id:Guid}/complete")]
+        [ProducesResponseType(typeof(ApiResponse<string>), 200)]
+        public async Task<ActionResult<ApiResponse<string>>> Complete ([FromRoute] Guid id)
+        {
+            var command = new CompleteAppointmentCommand{ Id = id };
+            await _mediator.Send(command);
+            return ApiResponse<string>.Success(null, "Appointment completed successfully");
         }
     }
 }

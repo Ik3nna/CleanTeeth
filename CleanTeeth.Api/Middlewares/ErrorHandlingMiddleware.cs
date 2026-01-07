@@ -1,6 +1,7 @@
 using System.Net;
 using System.Text.Json;
 using CleanTeeth.Application.Common.Exceptions;
+using CleanTeeth.Domain.Exceptions;
 
 namespace CleanTeeth.API.Middlewares
 {
@@ -37,6 +38,10 @@ namespace CleanTeeth.API.Middlewares
                 case NotFoundException:
                     httpStatusCode = HttpStatusCode.NotFound;
                     message = exception.Message;
+                    break;
+                case BusinessRuleException businessRuleException:
+                    httpStatusCode = HttpStatusCode.BadRequest;
+                    message = businessRuleException.Message;
                     break;
                 case CustomValidationException customValidationException:
                     httpStatusCode = HttpStatusCode.BadRequest;

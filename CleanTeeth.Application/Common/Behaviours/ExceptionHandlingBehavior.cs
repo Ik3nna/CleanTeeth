@@ -1,4 +1,3 @@
-using CleanTeeth.Application.Common.Exceptions;
 using MediatR;
 
 namespace CleanTeeth.Application.Common.Behaviours;
@@ -12,16 +11,9 @@ public class ExceptionHandlingBehavior<TRequest, TResponse> : IPipelineBehavior<
         {
             return await next();
         }
-        catch (CustomValidationException)
+        catch
         {
             throw; // let your middleware return a proper HTTP response
-        }
-        catch (Exception ex)
-        {
-            // Log exception here
-            throw new MediatorException(
-                $"An unhandled error occurred while processing {typeof(TRequest).Name}.",
-                ex);
         }
     }
 }
