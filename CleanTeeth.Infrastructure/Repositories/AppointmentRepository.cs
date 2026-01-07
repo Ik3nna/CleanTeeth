@@ -39,4 +39,57 @@ public class AppointmentRepository : Repository<Appointment>, IAppointmentReposi
 
         return appointment;
     }
+
+    public async Task<PagedResult<Appointment>> GetFilteredAsync(
+        int page, 
+        int pageSize, 
+        Guid? patientId, 
+        Guid? dentistId, 
+        Guid? dentalOfficeId, 
+        DateTime? startDate, 
+        DateTime? endDate
+    )
+    {
+        var appointment = _dbContext.Appointments
+        .Include(x => x.Patient)
+        .Include(x => x.DentalOffice)
+        .Include(x => x.Dentist)
+        .AsQueryable();
+
+        if (patientId.HasValue) appointment = appointment.Where(x => x.PatientId == patientId.Value);
+        if (dentistId.HasValue) appointment = appointment.Where(x => x.DentistId == dentistId.Value);
+        if (dentalOfficeId.HasValue) appointment = appointment.Where(x => x.DentalOfficeId == dentalOfficeId);
+        if (startDate.HasValue && endDate.HasValue)
+        {
+            appointment = appointment.Where(x =>
+                startDate.Value < x.TimeInterval.EndTime &&
+                endDate.Value > x.TimeInterval.StartTime
+            );
+        }
+        else if (startDate.HasValue)
+        {
+            appointment = appointment.Where(x => x.TimeInterval.StartTime >= startDate.Value);
+        }
+        else if (endDate.HasValue)
+        {
+            appointment = appointment.Where(x => x.TimeInterval.EndTime <= endDate.Value);
+        }
+
+        var totalCount = await appointment.CountAsync();
+
+        var items = await appointment
+            .OrderBy(x => x.TimeInterval.StartTime)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+
+        return new PagedResult<Appointment>
+        {
+            Items = items,
+            Page = page,
+            PageSize = pageSize,
+            TotalCount = totalCount
+        };
+        throw new NotImplementedException();
+    }
 }

@@ -1,6 +1,7 @@
 using AutoMapper;
 using CleanTeeth.Application.Appointments.Commands.CreateAppointment;
 using CleanTeeth.Application.Appointments.Queries.GetAppointmentDetail;
+using CleanTeeth.Application.Appointments.Queries.GetAppointments;
 using CleanTeeth.Application.DentalOffices.Commands.CreateDentalOffice;
 using CleanTeeth.Application.DentalOffices.Queries.GetDentalOfficeDetail;
 using CleanTeeth.Application.DentalOffices.Queries.GetDentalOfficeQuery;
@@ -60,6 +61,14 @@ public class AutoMapperProfiles : Profile
             .ForMember(dest => dest.Status, opt => opt.MapFrom(dto => Enum.Parse<AppointmentStatus>(dto.Status)));
 
         CreateMap<Appointment, AppointmentDetailDTO>()
+            .ForMember(dest => dest.StartDate, opt => opt.MapFrom(src => src.TimeInterval.StartTime))
+            .ForMember(dest => dest.EndDate, opt => opt.MapFrom(src => src.TimeInterval.EndTime))
+            .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.ToString()))
+            .ReverseMap()
+            .ForMember(dest => dest.TimeInterval, opt => opt.MapFrom(dto => new TimeInterval(dto.StartDate, dto.EndDate)))
+            .ForMember(dest => dest.Status, opt => opt.MapFrom(dto => Enum.Parse<AppointmentStatus>(dto.Status)));
+
+        CreateMap<Appointment, AppointmentListDTO>()
             .ForMember(dest => dest.StartDate, opt => opt.MapFrom(src => src.TimeInterval.StartTime))
             .ForMember(dest => dest.EndDate, opt => opt.MapFrom(src => src.TimeInterval.EndTime))
             .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.ToString()))

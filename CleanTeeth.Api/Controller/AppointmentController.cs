@@ -1,6 +1,7 @@
 using CleanTeeth.Api.Contracts.Appointments;
 using CleanTeeth.Application.Appointments.Commands.CreateAppointment;
 using CleanTeeth.Application.Appointments.Queries.GetAppointmentDetail;
+using CleanTeeth.Application.Appointments.Queries.GetAppointments;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -51,6 +52,34 @@ namespace CleanTeeth.Api.Controller
         {
             var dto = await _mediator.Send(new GetAppointmentDetailQuery { Id = id });
             var response = ApiResponse<AppointmentDetailDTO>.Success(dto, $"Appointment with {id} retrieved successfully");
+            return Ok(response);
+        }
+
+        /// <summary>
+        /// Gets a list of appointments
+        /// </summary>
+        /// <param name="page">Page number (default 1)</param>
+        /// <param name="pageSize">Page size (default 10)</param>
+        /// <param name="patient">Filter by a patient</param>
+        /// <param name="dentist">Filter by an dentist</param>
+        /// <param name="dentalOffice">Filter by a dentalOffice</param>
+        /// <param name="startDate">Filter by an startDate</param>
+        /// <param name="endDate">Filter by an endDate</param>
+        /// <response code="200">Returns the list of appointments</response>
+        [HttpGet]
+        [ProducesResponseType(typeof(ApiResponse<PagedResult<AppointmentListDTO>>), 200)]
+        public async Task<ActionResult<ApiResponse<PagedResult<AppointmentListDTO>>>> Get(
+            [FromQuery] int page = 1,
+            [FromQuery] int pageSize = 10,
+            [FromQuery] Guid? patient = null, 
+            [FromQuery] Guid? dentist = null,
+            [FromQuery] Guid? dentalOffice = null, 
+            [FromQuery] DateTime? startDate = null,
+            [FromQuery] DateTime? endDate = null
+        )
+        {
+            var dto = await _mediator.Send(new GetAppointmentsQuery(page, pageSize, patient, dentist, dentalOffice, startDate, endDate));
+            var response = ApiResponse<PagedResult<AppointmentListDTO>>.Success(dto, "Appointments retrieved successfully");
             return Ok(response);
         }
     }
