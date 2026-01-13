@@ -9,6 +9,8 @@ using CleanTeeth.Domain.Interfaces;
 using CleanTeeth.Infrastructure.Repositories;
 using CleanTeeth.API.Middlewares;
 using System.Reflection;
+using CleanTeeth.Application.Notifications;
+using CleanTeeth.Infrastructure.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -47,6 +49,7 @@ builder.Services.AddScoped<IDentalOfficeRepository, DentalOfficeRepository>();
 builder.Services.AddScoped<IPatientRepository, PatientRepository>();
 builder.Services.AddScoped<IDentistRepository, DentistRepository>();
 builder.Services.AddScoped<IAppointmentRepository, AppointmentRepository>();
+builder.Services.AddScoped<INotifications, EmailService>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 // Add API Explorer services (required for Swagger)

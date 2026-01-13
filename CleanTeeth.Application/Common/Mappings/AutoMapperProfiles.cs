@@ -8,6 +8,7 @@ using CleanTeeth.Application.DentalOffices.Queries.GetDentalOfficeQuery;
 using CleanTeeth.Application.Dentists.Commands.CreateDentist;
 using CleanTeeth.Application.Dentists.Queries.GetDentist;
 using CleanTeeth.Application.Dentists.Queries.GetDentistDetail;
+using CleanTeeth.Application.Notifications;
 using CleanTeeth.Application.Patients.Commands.CreatePatient;
 using CleanTeeth.Application.Patients.Queries.GetPatient;
 using CleanTeeth.Application.Patients.Queries.GetPatientDetail;
@@ -75,6 +76,15 @@ public class AutoMapperProfiles : Profile
             .ReverseMap()
             .ForMember(dest => dest.TimeInterval, opt => opt.MapFrom(dto => new TimeInterval(dto.StartDate, dto.EndDate)))
             .ForMember(dest => dest.Status, opt => opt.MapFrom(dto => Enum.Parse<AppointmentStatus>(dto.Status)));
+        
+        CreateMap<Appointment, AppointmentConfirmationDTO>()
+            .ForMember(dest => dest.Date, opt => opt.MapFrom(src => src.TimeInterval.StartTime))
+            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+            .ForMember(dest => dest.Patient, opt => opt.MapFrom(src => src.Patient!.Name))
+            .ForMember(dest => dest.Patient_Email, opt => opt.MapFrom(src => src.Patient!.Email))
+            .ForMember(dest => dest.DentalOffice, opt => opt.MapFrom(src => src.DentalOffice!.Name))
+            .ForMember(dest => dest.Dentist, opt => opt.MapFrom(src => src.Dentist!.Name));
+
 
         CreateMap<Patient, SimpleEntityDTO>().ReverseMap();
         CreateMap<Dentist, SimpleEntityDTO>().ReverseMap();

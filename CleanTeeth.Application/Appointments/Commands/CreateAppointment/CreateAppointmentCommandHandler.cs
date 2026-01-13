@@ -1,5 +1,6 @@
 using AutoMapper;
 using CleanTeeth.Application.Common.Exceptions;
+using CleanTeeth.Application.Notifications;
 using CleanTeeth.Domain.Entities;
 using CleanTeeth.Domain.Interfaces;
 using CleanTeeth.Domain.ValueObjects;
@@ -12,16 +13,19 @@ public class CreateAppointmentCommandHandler : IRequestHandler<CreateAppointment
     private readonly IAppointmentRepository _appointmentRepository;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
+    private readonly INotifications _notifications;
 
     public CreateAppointmentCommandHandler(
         IAppointmentRepository appointmentRepository, 
         IUnitOfWork unitOfWork,
-        IMapper mapper
+        IMapper mapper,
+        INotifications notifications
     )
     {
         _appointmentRepository = appointmentRepository;
         _unitOfWork = unitOfWork;
         _mapper = mapper;
+        _notifications = notifications;
     }
 
     public async Task<AppointmentDTO> Handle(CreateAppointmentCommand command, CancellationToken cancellationToken)
@@ -43,7 +47,11 @@ public class CreateAppointmentCommandHandler : IRequestHandler<CreateAppointment
             // Reload appointment with navigation properties
             var appointmentWithNav = await _appointmentRepository.GetByIdAsync(appointment.Id);
 
-            // Map to DTO
+            // Notification setup
+            var notificationDTO = _mapper.Map<AppointmentConfirmationDTO>(appointmentWithNav);
+            await _notifications.SendAppointmentConfirmation(notificationDTO);
+
+            // Map to DTO. This is what is returned on creation of a new appointment
             var dto = _mapper.Map<AppointmentDTO>(appointmentWithNav);
             return dto;
         } catch (Exception)
