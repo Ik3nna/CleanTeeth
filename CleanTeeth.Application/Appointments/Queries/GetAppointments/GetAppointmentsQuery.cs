@@ -1,3 +1,4 @@
+using CleanTeeth.Domain.Enums;
 using MediatR;
 
 namespace CleanTeeth.Application.Appointments.Queries.GetAppointments;
@@ -11,6 +12,7 @@ public class GetAppointmentsQuery : IRequest<PagedResult<AppointmentListDTO>>
     public Guid? dentalOfficeId { get; set; }
     public DateTime? startDate { get; set; }
     public DateTime? endDate { get; set; }
+    public AppointmentStatus? appointmentStatus { get; set; }
     public GetAppointmentsQuery(
         int _page = 1, 
         int _pageSize = 10, 
@@ -18,7 +20,8 @@ public class GetAppointmentsQuery : IRequest<PagedResult<AppointmentListDTO>>
         Guid? _dentistId = null,
         Guid? _dentalOfficeId = null,
         DateTime? _startDate = null,
-        DateTime? _endDate = null
+        DateTime? _endDate = null,
+        AppointmentStatus? _appointmentStatus = null
     )
     {
         page = _page;
@@ -28,5 +31,6 @@ public class GetAppointmentsQuery : IRequest<PagedResult<AppointmentListDTO>>
         dentalOfficeId = _dentalOfficeId;
         startDate = _startDate;
         endDate = _endDate;
+        appointmentStatus = _appointmentStatus;
     }
 }

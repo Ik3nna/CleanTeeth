@@ -13,6 +13,7 @@
   <ItemGroup>
     <Folder Include="Appointments/Commands/CancelAppointment/" />
     <Folder Include="Appointments/Commands/CompleteAppointment/" />
+    <Folder Include="Appointments/Commands/SendAppointmentReminder/" />
     <Folder Include="Appointments/Queries/GetAppointments/" />
     <Folder Include="Common/Behaviours/" />
     <Folder Include="Common/Exceptions/" />

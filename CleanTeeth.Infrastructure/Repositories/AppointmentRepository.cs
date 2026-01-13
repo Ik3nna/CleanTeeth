@@ -47,7 +47,8 @@ public class AppointmentRepository : Repository<Appointment>, IAppointmentReposi
         Guid? dentistId, 
         Guid? dentalOfficeId, 
         DateTime? startDate, 
-        DateTime? endDate
+        DateTime? endDate,
+        AppointmentStatus? appointmentStatus
     )
     {
         var appointment = _dbContext.Appointments
@@ -59,6 +60,7 @@ public class AppointmentRepository : Repository<Appointment>, IAppointmentReposi
         if (patientId.HasValue) appointment = appointment.Where(x => x.PatientId == patientId.Value);
         if (dentistId.HasValue) appointment = appointment.Where(x => x.DentistId == dentistId.Value);
         if (dentalOfficeId.HasValue) appointment = appointment.Where(x => x.DentalOfficeId == dentalOfficeId);
+        if (appointmentStatus.HasValue) appointment = appointment.Where(x => x.Status == appointmentStatus);
         if (startDate.HasValue && endDate.HasValue)
         {
             appointment = appointment.Where(x =>
@@ -91,5 +93,24 @@ public class AppointmentRepository : Repository<Appointment>, IAppointmentReposi
             TotalCount = totalCount
         };
         throw new NotImplementedException();
+    }
+
+    public async Task<IReadOnlyList<Appointment>> GetAppointmentsForReminderAsync(
+        DateTime from,
+        DateTime to,
+        AppointmentStatus status
+    )
+    {
+        return await _dbContext.Appointments
+            .Include(x => x.Patient)
+            .Include(x => x.Dentist)
+            .Include(x => x.DentalOffice)
+            .Where(x =>
+                x.Status == status &&
+                x.TimeInterval.StartTime >= from &&
+                x.TimeInterval.EndTime <= to
+            )
+            .OrderBy(x => x.TimeInterval.StartTime)
+            .ToListAsync();
     }
 }

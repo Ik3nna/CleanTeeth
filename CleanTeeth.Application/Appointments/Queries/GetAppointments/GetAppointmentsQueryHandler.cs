@@ -24,7 +24,8 @@ public class GetAppointmentsQueryHandler : IRequestHandler<GetAppointmentsQuery,
             request.dentistId,
             request.dentalOfficeId,
             request.startDate,
-            request.endDate
+            request.endDate,
+            request.appointmentStatus
         );
         // Map only the Items
         var dtoItems = _mapper.Map<List<AppointmentListDTO>>(appointment.Items);

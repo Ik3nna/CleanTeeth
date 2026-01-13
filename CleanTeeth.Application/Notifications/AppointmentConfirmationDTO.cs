@@ -1,6 +1,6 @@
 namespace CleanTeeth.Application.Notifications;
 
-public class AppointmentConfirmationDTO
+public class AppointmentEmailDataDTO
 {
     public required Guid Id { get; set; }
     public required string Patient { get; set; }
@@ -8,4 +8,14 @@ public class AppointmentConfirmationDTO
     public required string Dentist { get; set; }
     public required string DentalOffice { get; set; }
     public required DateTime Date { get; set; }
+}
+
+public class AppointmentConfirmationDTO: AppointmentEmailDataDTO
+{
+       
+}
+
+public class AppointmentReminderDTO: AppointmentEmailDataDTO
+{
+
 }

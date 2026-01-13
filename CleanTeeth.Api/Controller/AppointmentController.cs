@@ -4,6 +4,7 @@ using CleanTeeth.Application.Appointments.Commands.CompleteAppointment;
 using CleanTeeth.Application.Appointments.Commands.CreateAppointment;
 using CleanTeeth.Application.Appointments.Queries.GetAppointmentDetail;
 using CleanTeeth.Application.Appointments.Queries.GetAppointments;
+using CleanTeeth.Domain.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -67,6 +68,7 @@ namespace CleanTeeth.Api.Controller
         /// <param name="dentalOffice">Filter by a dentalOffice</param>
         /// <param name="startDate">Filter by an startDate</param>
         /// <param name="endDate">Filter by an endDate</param>
+        /// <param name="appointmentStatus">Filter by status of appointment</param>
         /// <response code="200">Returns the list of appointments</response>
         [HttpGet]
         [ProducesResponseType(typeof(ApiResponse<PagedResult<AppointmentListDTO>>), 200)]
@@ -77,10 +79,11 @@ namespace CleanTeeth.Api.Controller
             [FromQuery] Guid? dentist = null,
             [FromQuery] Guid? dentalOffice = null, 
             [FromQuery] DateTime? startDate = null,
-            [FromQuery] DateTime? endDate = null
+            [FromQuery] DateTime? endDate = null,
+            [FromQuery] AppointmentStatus? appointmentStatus = null
         )
         {
-            var dto = await _mediator.Send(new GetAppointmentsQuery(page, pageSize, patient, dentist, dentalOffice, startDate, endDate));
+            var dto = await _mediator.Send(new GetAppointmentsQuery(page, pageSize, patient, dentist, dentalOffice, startDate, endDate, appointmentStatus));
             var response = ApiResponse<PagedResult<AppointmentListDTO>>.Success(dto, "Appointments retrieved successfully");
             return Ok(response);
         }

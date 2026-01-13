@@ -84,6 +84,14 @@ public class AutoMapperProfiles : Profile
             .ForMember(dest => dest.Patient_Email, opt => opt.MapFrom(src => src.Patient!.Email))
             .ForMember(dest => dest.DentalOffice, opt => opt.MapFrom(src => src.DentalOffice!.Name))
             .ForMember(dest => dest.Dentist, opt => opt.MapFrom(src => src.Dentist!.Name));
+        
+        CreateMap<Appointment, AppointmentReminderDTO>()
+            .ForMember(dest => dest.Date, opt => opt.MapFrom(src => src.TimeInterval.StartTime))
+            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+            .ForMember(dest => dest.Patient, opt => opt.MapFrom(src => src.Patient!.Name))
+            .ForMember(dest => dest.Patient_Email, opt => opt.MapFrom(src => src.Patient!.Email))
+            .ForMember(dest => dest.DentalOffice, opt => opt.MapFrom(src => src.DentalOffice!.Name))
+            .ForMember(dest => dest.Dentist, opt => opt.MapFrom(src => src.Dentist!.Name));
 
 
         CreateMap<Patient, SimpleEntityDTO>().ReverseMap();

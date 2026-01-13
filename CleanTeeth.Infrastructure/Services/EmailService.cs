@@ -30,6 +30,22 @@ public class EmailService : INotifications
         await SendEmail(appointmentConfirmationDTO.Patient_Email, subject, body);
     }
 
+    public async Task SendAppointmentReminder(AppointmentReminderDTO appointmentReminderDTO)
+    {
+       var subject = "Appointment Confirmation - Clean Teeth";
+        var body = $"""
+                Dear, {appointmentReminderDTO.Patient},
+
+                This is a reminder for your appointment with Dr. {appointmentReminderDTO.Dentist} on {appointmentReminderDTO.Date.ToString("f", new CultureInfo("es-DO"))} in the office {appointmentReminderDTO.DentalOffice}.
+
+                We will be waiting for you.
+
+                Clean Teeth team
+                """;
+        
+        await SendEmail(appointmentReminderDTO.Patient_Email, subject, body);
+    }
+
     private async Task SendEmail (string to, string subject, string body)
     {
         var from = configuration.GetValue<string>("EMAIL_CONFIGURATIONS:EMAIL");

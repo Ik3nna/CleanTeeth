@@ -1,4 +1,5 @@
 using CleanTeeth.Domain.Entities;
+using CleanTeeth.Domain.Enums;
 
 namespace CleanTeeth.Domain.Interfaces;
 
@@ -15,6 +16,13 @@ public interface IAppointmentRepository : IRepository<Appointment>
         Guid? dentistId,
         Guid? dentalOfficeId,
         DateTime? startDate,
-        DateTime? endDate
+        DateTime? endDate,
+        AppointmentStatus? appointmentStatus
+    );
+
+    Task<IReadOnlyList<Appointment>> GetAppointmentsForReminderAsync(
+        DateTime from,
+        DateTime to,
+        AppointmentStatus appointmentStatus
     );
 }
