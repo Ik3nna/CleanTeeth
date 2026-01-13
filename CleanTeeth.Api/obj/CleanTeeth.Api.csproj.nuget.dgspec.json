@@ -59,6 +59,18 @@
               "target": "Package",
               "version": "[12.1.1, )"
             },
+            "Hangfire": {
+              "target": "Package",
+              "version": "[1.8.22, )"
+            },
+            "Hangfire.AspNetCore": {
+              "target": "Package",
+              "version": "[1.8.22, )"
+            },
+            "Hangfire.SqlServer": {
+              "target": "Package",
+              "version": "[1.8.22, )"
+            },
             "MediatR": {
               "target": "Package",
               "version": "[11.1.0, )"

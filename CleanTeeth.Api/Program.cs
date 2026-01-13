@@ -11,6 +11,8 @@ using CleanTeeth.API.Middlewares;
 using System.Reflection;
 using CleanTeeth.Application.Notifications;
 using CleanTeeth.Infrastructure.Services;
+using Hangfire;
+using CleanTeeth.Api.BackgroundJobs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +22,17 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<CleanTeethDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("CleanTeethConnectionString"))
 );
+
+// =====================================================================
+    // HANGFIRE
+// =====================================================================
+builder.Services.AddHangfire(config =>
+{
+    config.UseSqlServerStorage(
+        builder.Configuration.GetConnectionString("CleanTeethConnectionString"));
+});
+
+builder.Services.AddHangfireServer();
 
 // =====================================================================
     // VALIDATION, MAPPING
@@ -51,6 +64,7 @@ builder.Services.AddScoped<IDentistRepository, DentistRepository>();
 builder.Services.AddScoped<IAppointmentRepository, AppointmentRepository>();
 builder.Services.AddScoped<INotifications, EmailService>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<AppointmentsReminderJob>();
 
 // Add API Explorer services (required for Swagger)
 builder.Services.AddControllers();
@@ -84,6 +98,14 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseCustomExceptionHandler();
+app.UseHangfireDashboard("/hangfire");
 app.MapControllers();
 app.UseHttpsRedirection();
+
+RecurringJob.AddOrUpdate<AppointmentsReminderJob>(
+    "appointment-reminder-job",
+    job => job.RunAsync(),
+    Cron.Daily(8) // 8 AM UTC
+);
+
 app.Run();
