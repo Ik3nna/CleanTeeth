@@ -67,7 +67,14 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<AppointmentsReminderJob>();
 
 // Add API Explorer services (required for Swagger)
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    // This is for enums; to ensure that the values are displayed and not the numbers
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.Converters.Add(
+            new System.Text.Json.Serialization.JsonStringEnumConverter()
+        );
+    });
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
@@ -77,6 +84,9 @@ builder.Services.AddSwaggerGen(c =>
         Version = "v1",
         Description = "API for CleanTeeth application"
     });
+
+    // This too is for enums; to ensure that the values are displayed and not the numbers
+    c.UseInlineDefinitionsForEnums();
 
     // Include XML comments
     var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
